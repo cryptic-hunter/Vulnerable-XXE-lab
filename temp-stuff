@@ -1,0 +1,116 @@
+
+
+
+
+
+
+
+
+
+<html>
+<body>
+
+<?php if ($_SERVER['REQUEST_METHOD'] == 'GET') { ?>
+
+        <form method="post" action="<?php echo $_SERVER['SCRIPT_NAME'] ?>"
+        enctype="multipart/form-data">
+        <input type="file" name="doc"/>
+        <input type="submit" value="Send File"/>
+        </form>
+
+<?php } else {
+                if (isset($_FILES['doc']) &&
+                    ($_FILES['doc']['error'] == UPLOAD_ERR_OK)) {
+                        $oldPath = $_FILES['doc']['tmp_name'];
+                        $newPath = 'C:\xampp-php\htdocs\Vulnerable-XXE\upl04d3d_f1l35_g035_h3r3/' . basename($_FILES['doc']['name']);
+
+                        if (move_uploaded_file($oldPath, $newPath)) {
+                                print "File moved from $oldPath to $newPath";
+                        } else {
+                                print "Couldn't move $oldPath to $newPath";
+                        }
+                } else {
+                        print "No valid file uploaded.";
+                }
+        }
+?>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<form enctype="multipart/form-data"  method="post">
+<input type="hidden" name="MAX_FILE_SIZE" value="2000000" />
+
+
+<table align="center" width="300" border="0" bgcolor="#F3F3F3">
+<tr>
+    <td>Upload your favorite file below:</td>
+    </tr>
+    <tr>
+        <td> <input type="file" name="file" /></td>
+        </tr>
+        <tr>
+            <td><input type="submit" name="upload" value="upload" /></td>
+            </tr>
+</table>
+</form>
+
+
+<hr>
+
+<?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
+$targetdir = '/upl04d3d_f1l35_g035_h3r3/';
+if(isset($_POST['upload']))
+{
+	$buffer = file_get_contents($_FILES['file']['name']);
+	libxml_disable_entity_loader(false);
+	$xml = simplexml_load_string($buffer, 'SimpleXMLElement', LIBXML_NOENT);
+	$targetfile = $targetdir.$_FILES['file']['name'];
+	/*if(move_uploaded_file($_FILES['file']['name'], $targetfile)) 
+	{
+		echo "file upload successful";
+	} else {
+		echo "file upload failed";
+	}*/
+	 $oldPath = $_FILES['file']['tmp_name'];
+	 echo $oldpath;
+	 $newPath = 'C:\xampp-php\htdocs\Vulnerable-XXE\upl04d3d_f1l35_g035_h3r3/' . basename($_FILES['file']['name']);
+	 echo $newpath;
+	 if (move_uploaded_file($oldPath, $newPath)) 
+	 {
+	 	print "File moved from $oldPath to $newPath";
+     } else {
+     	print "Couldn't move $oldPath to $newPath";
+      }
+}
+?>
